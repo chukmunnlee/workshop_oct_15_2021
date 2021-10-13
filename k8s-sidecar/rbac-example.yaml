@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: policy-bundle
+  labels:
+     name: policy-bundle
+binaryData:
+  bundle.tar.gz: H4sIAAAAAAAA/+xW0W7iOhDlFX/FyLRSe0VbQ6C9QmW/oA+rfUUoMmSg3k2cbOyoZSv+fTVJSEIKItuKVrtiHoprxuec8XhmuPGkldffTahbRzMhhLgVIv0Urz+FEE5lLVqi1xPDXgvE8SSVlhgr45Z4N1c9uL/EXtbssyWc7BPtJgp9NV9dx7gMj8VxoP57d06/Xv8DZ3Cq/4+wSM5/yCWCTOzjL8Y8XMjEtyB9P3yCMSykb5CxDvjKWAgXgEHkhytEA1cwlxpmCJE0Bj1g5VdjmPBFjB7vAp/JWOMqXaG16eJJ+YHkU4L9hsvEl3EFlkDxOUJtEO7BEYJlWl5YWxl348fay1h66NpVhBc8zlD4JWsrHSX2OtHKfo3VHOE/yHZ+JlJbZVdwP853cpIHFSjb7NxQCLYm1Q8ovbrSYSOlFmVw5aP03qF1TWnSqwnXoS1o+BTGEBC3Di1s8QcwGoOJYqXt4oKfG1AGyInkb053YZIxaRng9LLkwOc5oufmAlyfFJRcMggTbWEjc38oheuXnbe/LfHs3IOMt7jflJfe39k5vapJhtbdAbZDfJaAmvQ97+ctEVHq94eQElUCGApRRpCpraSLpBXFMHGnhRJKDPlWdNOfSzpAi8IxdWBNx3re/12Lxh5rCBzs/7f1/t8f3N2e+v9HWK3/d7aaOOu0X4DTy+MjKDp6+sBoY1M2sO5ue5Y9/7BvNgyqrmWP7NK5KIyt4SOYQH2mwBTWrDNlLApdAWOqhJpY1n6tgDaLsuYj6AlBW5u65iPo0//VnsJHNIi6VH5R6PZqVJtom5D1G5ENSrL+O8icRmR3JZlTI8tzU+WqJOdgaM4Otv9LtgGxFVwRzmY+Gr5mjHqRSwl088jcJ2Ufld6eQun8SQcufZs1P5AG6DGwDUp2XW/F6e3DyQfLPAwiqVclTjpWd2P1C6z0Vl26SNdHqf9UlFMA5Vfm0u+A1Bm9AyIGjefCyU52sn/ffgcAAP//j8vbdAAUAAA=
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: rbac-example
+   labels:
+      name: rbac-example
+
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         name: rbac-example
+   template:
+      metadata:
+         name: rbac-example
+         labels:
+            name: rbac-example
+      spec:
+         volumes:
+         - name: policy-bundle-vol 
+           configMap: 
+               name: policy-bundle
+         containers:
+         - name: webapp
+           image: chukmunnlee/demo-rbac:v1
+           imagePullPolicy: IfNotPresent
+         - name: opa
+           image: openpolicyagent/opa:0.34.0-dev-static
+           args: [ "run", "-s", "-b", "/policy/bundle.tar.gz" ]
+           volumeMounts:
+           - name: policy-bundle-vol
+             mountPath: /policy
+

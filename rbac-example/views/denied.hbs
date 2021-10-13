@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Approved</title>
+	</head>
+	<body>
+
+		<h1>Denied</h1>
+
+		<h3>Hello {{ name }}, your order of ${{ amount }} has been denied</h3>
+
+		<h3>Reasons for the rejecting your request</h3>
+		{{#each reasons}}
+			<h4> {{ this }} </h4>
+		{{/each}}
+
+		<a href="/">Back</a>
+		
+	</body>
+</html>

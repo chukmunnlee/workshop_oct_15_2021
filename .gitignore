@@ -1,3 +1,6 @@
+# policy bundle
+#
+bundle.tar.gz
 # Logs
 logs
 *.log

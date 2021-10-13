@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Requsition</title>
+</head>
+<body>
+
+	<h1>Purchase Requisition</h1>
+
+	<form method="POST" action="/po">
+		<table>
+			<tr>
+				<td>Item:</td>
+				<td>
+					<input type="text" name="item" size="30" required>
+				</td>
+			</tr>
+			<tr>
+				<td>Unit Price:</td>
+				<td>
+					<input type="number" name="unitPrice" min="1" value="100" required>
+				</td>
+			</tr>
+			<tr>
+				<td>Quantity:</td>
+				<td>
+					<input type="number" name="quantity" min="1" value="1" required>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<button type="submit">Submit for Approval</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+</body>
+</html>
