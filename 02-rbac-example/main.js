@@ -14,7 +14,7 @@ const mkQuery = (url) =>
 			method: 'POST',
 			body: JSON.stringify(input),
 			headers: { 'Content-Type': 'application/json' }
-		})
+		}).then(resp => resp.json())
 
 const allow = mkQuery(`http://${OPA_ADDRESS}/v1/data/authz/allow`)
 const deny = mkQuery(`http://${OPA_ADDRESS}/v1/data/authz/deny`)
@@ -78,7 +78,6 @@ app.post('/po', (req, resp) => {
 		console.info('\n*** input: ', input)
 
 		deny({ input })
-			.then(resp => resp.json())
 			.then(result => {
 				console.info('\n*** result: ', result)
 
