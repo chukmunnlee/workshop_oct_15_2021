@@ -1,0 +1,13 @@
+on: [ push ]
+jobs:
+   test-kubernetes-manifest:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+      - name: Conftest
+        uses: ./.github/actions/conftest
+        with: 
+           file: ./03-k8s-sidecar/rbac-example.yaml 
+           policy: ./04-configuration-test/policy
+

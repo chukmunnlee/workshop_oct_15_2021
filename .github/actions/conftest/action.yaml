@@ -1,0 +1,28 @@
+name: conftest
+description: Run conftest on structured data
+inputs:
+   file:
+      description: File for conftest to run
+      required: true
+   policy:
+      description: Location of the policy folder
+      default: policy
+   namespace:
+      description: Policy namespace. Defauls to main
+      default: main
+   output:
+      description: Output format. Default to github
+      default: github
+
+runs:
+   using: docker
+   image: docker://openpolicyagent/conftest:latest
+   args:
+   - test 
+   - ${{ inputs.file }} 
+   - -o 
+   - ${{ inputs.output}} 
+   - -p 
+   - ${{ inputs.policy }} 
+   - --namespace 
+   - ${{ inputs.namespace }}

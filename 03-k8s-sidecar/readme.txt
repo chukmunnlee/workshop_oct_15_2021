@@ -1,3 +1,3 @@
 Build the policy bundle from rbac-example/policy
 	cd ../rbac-example/policy
-	opa build .
+	opa build -r release_num .
