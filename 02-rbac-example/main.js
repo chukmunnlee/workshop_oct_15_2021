@@ -9,15 +9,12 @@ const SECRET = process.env.SECRET || 'changeit'
 const PORT = parseInt(process.env.PORT) || 3000
 const OPA_ADDRESS = process.env.OPA_ADDRESS || 'localhost:8181'
 
-const mkQuery = (url) => {
-	return (input) => {
-		return fetch(url, { 
+const mkQuery = (url) =>
+	(input) => fetch(url, { 
 			method: 'POST',
 			body: JSON.stringify(input),
 			headers: { 'Content-Type': 'application/json' }
 		})
-	}
-}
 
 const allow = mkQuery(`http://${OPA_ADDRESS}/v1/data/authz/allow`)
 const deny = mkQuery(`http://${OPA_ADDRESS}/v1/data/authz/deny`)
