@@ -3,10 +3,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: policy-bundle
-  labels:
-     name: policy-bundle
 binaryData:
-  bundle.tar.gz: H4sIAAAAAAAA/+xW0W7iOhDlFX/FyLRSe0VbQ6C9QmW/oA+rfUUoMmSg3k2cbOyoZSv+fTVJSEIKItuKVrtiHoprxuec8XhmuPGkldffTahbRzMhhLgVIv0Urz+FEE5lLVqi1xPDXgvE8SSVlhgr45Z4N1c9uL/EXtbssyWc7BPtJgp9NV9dx7gMj8VxoP57d06/Xv8DZ3Cq/4+wSM5/yCWCTOzjL8Y8XMjEtyB9P3yCMSykb5CxDvjKWAgXgEHkhytEA1cwlxpmCJE0Bj1g5VdjmPBFjB7vAp/JWOMqXaG16eJJ+YHkU4L9hsvEl3EFlkDxOUJtEO7BEYJlWl5YWxl348fay1h66NpVhBc8zlD4JWsrHSX2OtHKfo3VHOE/yHZ+JlJbZVdwP853cpIHFSjb7NxQCLYm1Q8ovbrSYSOlFmVw5aP03qF1TWnSqwnXoS1o+BTGEBC3Di1s8QcwGoOJYqXt4oKfG1AGyInkb053YZIxaRng9LLkwOc5oufmAlyfFJRcMggTbWEjc38oheuXnbe/LfHs3IOMt7jflJfe39k5vapJhtbdAbZDfJaAmvQ97+ctEVHq94eQElUCGApRRpCpraSLpBXFMHGnhRJKDPlWdNOfSzpAi8IxdWBNx3re/12Lxh5rCBzs/7f1/t8f3N2e+v9HWK3/d7aaOOu0X4DTy+MjKDp6+sBoY1M2sO5ue5Y9/7BvNgyqrmWP7NK5KIyt4SOYQH2mwBTWrDNlLApdAWOqhJpY1n6tgDaLsuYj6AlBW5u65iPo0//VnsJHNIi6VH5R6PZqVJtom5D1G5ENSrL+O8icRmR3JZlTI8tzU+WqJOdgaM4Otv9LtgGxFVwRzmY+Gr5mjHqRSwl088jcJ2Ufld6eQun8SQcufZs1P5AG6DGwDUp2XW/F6e3DyQfLPAwiqVclTjpWd2P1C6z0Vl26SNdHqf9UlFMA5Vfm0u+A1Bm9AyIGjefCyU52sn/ffgcAAP//j8vbdAAUAAA=
+  bundle.tar.gz: H4sIAAAAAAAA/+xYbW/CNhDuV/wrTqaV2olR8z5FZb+gH6Z9RShyyUG9JXaWOGsZ4r9Pl1cIIFg7Wm3KfWhS53zPc3buOYdHT1rZ/S02+uZqJoQQYyHSqzi80sPqnsZ7PTEa3oC4HqXKktjK6EZ8Gque3H/ENhyD0DdrxJg7M76M0OMd/iIjjWu6QWvp+qb8QPL5ln0338b+XXsMja8W626EK3MtjDP13xv3Dup/2J809f8VFsrF73KFIBP7+hdjHi5l4luQvm/eYApL6cfIWBt+xVXiywhKtYCF1IDvIeoY4QkGQrBs0oa1VOwWfqy1iqSHrl2HeM+jLAp/YC2lw8R2E63sL5FaIPwA2cgfidRW2TU8TfORHORZBcpeNm8kBNsS62eUXp3p6CKmFmXwo4/S+wTXLa2nXs+4NraE4XOYQkDY2ljYww/AmUIcRkrb5T2/i0HFQE5Ev5jdgVmGpGWA84cKA98XiJ6bE3B9YlBhycAk2kJB83QqpevPR1d/n+LtnQcZbrm+KS6YJdzeeUQ2i9Y5EuwI+WwDatRPvD8fyYi2/nQKKdBOAiMhqgwytjvbRdTSs1NZETN3XtKh3aEJO+TpzwPNopvSMXVg39dXc/13Lcb2Wk3gnP5Pxv2a/veHk3Gj/19hNf1vV/o+hRlrtzbA6V3mDuRnQ+DpK0sDRTXCtrPvWRwfL/HNTpa7rpX0dmheaCIbcwdmFYM8Psxhy9pzxkLjCphSbdXIstYhAxos1YI70BOChgq54A706f9dqeIO9bcOFXRo3F4Nqsj2ErD+RWDDCqz/CbDBRWCTCmxQA8v3ZhdrZ3POpjY4gvZThTYktBIrxJcXH2O+ZYy0yKUNdPPM3DdlX5Xeb25pW0v7OD3N5BRkDPQysCJKtlwfjdM7FSfvVwsThFKvqzhptz4eq1/GSlfVpYV0fZT6n5IalIHyJXPpeJE6o3eGxPCg0zx2A6nVEmN7PY05+/0/mBx8/48Hjf5/hW14hH+qWBnNHR4J3uGRMTb9LaD53G+sscYa+x/b3wEAAP//EZAmfAAYAAA=
 
 ---
 apiVersion: apps/v1
@@ -35,8 +33,13 @@ spec:
          - name: webapp
            image: chukmunnlee/demo-rbac:v1
            imagePullPolicy: IfNotPresent
+           volumeMounts:
+           - name: policy-bundle-vol
+             mountPath: /app/bundle.tar.gz
+             subPath: bundle.tar.gz
          - name: opa
-           image: openpolicyagent/opa:0.34.0-dev-static
+           #image: openpolicyagent/opa:0.34.0-dev-static
+           image: openpolicyagent/opa:latest
            args: [ "run", "-s", "-b", "/policy/bundle.tar.gz" ]
            volumeMounts:
            - name: policy-bundle-vol

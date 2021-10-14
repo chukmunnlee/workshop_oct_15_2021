@@ -9,18 +9,18 @@ const SECRET = process.env.SECRET || 'changeit'
 const PORT = parseInt(process.env.PORT) || 3000
 const OPA_ADDRESS = process.env.OPA_ADDRESS || 'localhost:8181'
 
-const allow = (input) =>
-		fetch(`http://${OPA_ADDRESS}/v1/data/authz/allow`, { 
+const mkQuery = (url) => {
+	return (input) => {
+		return fetch(url, { 
 			method: 'POST',
 			body: JSON.stringify(input),
 			headers: { 'Content-Type': 'application/json' }
 		})
-const deny = (input) =>
-		fetch(`http://${OPA_ADDRESS}/v1/data/authz/deny`, { 
-			method: 'POST',
-			body: JSON.stringify(input),
-			headers: { 'Content-Type': 'application/json' }
-		})
+	}
+}
+
+const allow = mkQuery(`http://${OPA_ADDRESS}/v1/data/authz/allow`)
+const deny = mkQuery(`http://${OPA_ADDRESS}/v1/data/authz/deny`)
 
 const employees = [
 	{ name: "fred", grade: "regular", expenseLimit: 300 },
@@ -79,10 +79,12 @@ app.post('/po', (req, resp) => {
 			expenseLimit: empDetails.expenseLimit
 		}
 		console.info('\n*** input: ', input)
+
 		deny({ input })
 			.then(resp => resp.json())
 			.then(result => {
 				console.info('\n*** result: ', result)
+
 				if (Object.values(result.result).length <= 0)
 					return resp.status(200)
 						.render('approved', { 

@@ -2,9 +2,6 @@ package authz
 
 default allow = false
 
-# list of employees - can be passed 
-employees = [ "fred", "barney", "betty", "wilma" ]
-
 # Regular employees can expense < 300
 allow {
 	is_employee
@@ -39,7 +36,7 @@ deny["exceed_grade_limit"] = m {
 }
 
 is_employee {
-	employees[_] = input.name
+	data.employees[_] = input.name
 }
 
 grade_type(type) {
