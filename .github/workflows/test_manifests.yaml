@@ -8,6 +8,6 @@ jobs:
       - name: Conftest
         uses: ./.github/actions/conftest
         with: 
-           file: ./03-k8s-sidecar/rbac-example.yaml 
+           file: ./04-configuration-test/rbac-example.yaml 
            policy: ./04-configuration-test/policy
 
