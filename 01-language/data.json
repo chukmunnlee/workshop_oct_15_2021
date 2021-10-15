@@ -1,0 +1,9 @@
+{
+	"employees": [
+		{ "name": "pebbles","grade": "intern", "reports_to": "fred" },
+		{ "name": "fred", "grade": "staff", "reports_to": "george" },
+		{ "name": "barney","grade": "staff", "reports_to": "george" },
+		{ "name": "wilma", "grade": "manager" },
+		{ "name": "george", "grade": "manager" }
+	]
+}
